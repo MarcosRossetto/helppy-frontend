@@ -29,12 +29,7 @@ function TeacherForm(): ReactElement {
     { week_day: 0, from: '', to: '' },
   ]);
 
-  function addNewScheduleItem() {
-    setScheduleItems([...scheduleItems,
-    { week_day: 0, from: '', to: '' },
-    ]);
-  }
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function searchAddress(e: any) {
     const cep = e.target.value
     const validCep = /^[0-9]{8}$/
