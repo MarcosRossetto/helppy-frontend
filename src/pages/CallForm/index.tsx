@@ -11,6 +11,10 @@ import './styles.css';
 import apiCore from '../../services/apiCore';
 import apiCep from '../../services/apiCep'
 
+// import cpfMask from '../../services/cpfMask'
+import cepMask from '../../services/masks/cepMask'
+import phoneMask from '../../services/masks/phoneMask'
+
 function CallForm(): ReactElement {
   const history = useHistory();
 
@@ -22,6 +26,8 @@ function CallForm(): ReactElement {
   const [addressNumber, setAddressNumber] = useState('');
   const [addressDistrict, setAddressDistrict] = useState('');
   const [addressUf, setAddressUf] = useState('');
+  // const [cpf, setCpf] = useState('');
+  const [cep, setCep] = useState('');
 
   const [category, setSubject] = useState('');
 
@@ -31,12 +37,14 @@ function CallForm(): ReactElement {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function searchAddress(e: any) {
-    const cep = e.target.value
+    const cep1 = cepMask(e.target.value)
+    setCep(cep1)
     const validCep = /^[0-9]{8}$/
-    if(!cep || cep.length < 8) return
-    
-    if(validCep.test(cep)){
-      apiCep.get(`${cep}/json`).then((data) => {
+    if(!cep1 || cep1.length < 8) return
+
+    const cepUnmask = cep1.replace(/\D/g, '')
+    if(validCep.test(cepUnmask)){
+      apiCep.get(`${cepUnmask}/json`).then((data) => {
         const addressData = data.data
         setAddress(addressData.logradouro)
         setAddressDistrict(addressData.bairro)
@@ -103,16 +111,26 @@ function CallForm(): ReactElement {
               onChange={(e) => { setEmail(e.target.value) }}
             />
 
+            {/* <Input
+              name="cpf"
+              label="CPF"
+              value={cpf}
+              onChange={(e) => { setCpf(cpfMask(e.target.value)) }}
+              maxLength={14}
+            /> */}
+
             <Input
               name="whatsapp"
               label="WhatsApp"
               value={whatsapp}
-              onChange={(e) => { setWhatsapp(e.target.value) }}
+              onChange={(e) => { setWhatsapp(phoneMask(e.target.value)) }}
+              maxLength={15}
             />
 
             <Input
-              name="cep"
+              name="cep1"
               label="CEP"
+              value={cep}
               onChange={searchAddress}
               maxLength={8}
             />

@@ -50,6 +50,7 @@ function Login(): ReactElement {
               label="Senha"
               value={password}
               onChange={(e) => { setPassword(e.target.value) }}
+              type="password"
             />
           </fieldset>
           <footer>
