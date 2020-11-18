@@ -132,7 +132,7 @@ function CallForm(): ReactElement {
               label="CEP"
               value={cep}
               onChange={searchAddress}
-              maxLength={8}
+              maxLength={9}
             />
 
             <Input
