@@ -2,15 +2,15 @@ import React, { ReactElement, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import apiCore from '../../services/apiCore'
 
-import './styles.css'
-
-import logoImg from '../../assets/images/logo.svg'
 import landingImg from '../../assets/images/landing.svg'
 
 import studyIcon from '../../assets/images/icons/study.svg'
 import whiteHeartIcon from '../../assets/images/icons/white-heart.svg'
 
+import './styles.css'
+
 function Landing(): ReactElement {
+  const logoImg = 'https://fontmeme.com/permalink/201116/ccf8651217956c62bc599c5559f05080.png'
   const [totalConnections, settotalConnections] = useState(0)
 
   useEffect(() => {
@@ -31,8 +31,8 @@ function Landing(): ReactElement {
         <img src={landingImg} alt="Plataforma de help desk" className="hero-image" />
 
         <div className="buttons-container">
-          <Link to="/study" className="study">
-            <img src={studyIcon} alt="Estudar" />
+          <Link to="/callForm" className="study">
+            <img src={studyIcon} alt="Abrir Chamado" />
             Abrir Chamado
           </Link>
         </div>
