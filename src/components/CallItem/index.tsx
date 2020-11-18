@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-import './styles.css'
+import './styles.css';
 
-import whastappIcon from '../../assets/images/icons/whatsapp.svg'
-import api from '../../services/api'
+import whastappIcon from '../../assets/images/icons/whatsapp.svg';
+import apiCore from '../../services/apiCore';
 
 export interface Teacher {
   avatar: string
@@ -21,9 +21,9 @@ interface TeacherItemProps {
 
 const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }: TeacherItemProps) => {
   function createNewConnection() {
-    api.post('connections', {
+    apiCore.post('connections', {
       user_id: teacher.id,
-    })
+    });
   }
 
   return (
@@ -57,7 +57,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }: TeacherItemProps) 
         </a>
       </footer>
     </article>
-  )
-}
+  );
+};
 
-export default TeacherItem
+export default TeacherItem;

@@ -12,8 +12,8 @@ interface PageHeaderProps {
   children?: ReactNode
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ title, description, children }: PageHeaderProps) => {
-  return (
+const PageHeader: React.FC<PageHeaderProps> =
+  ({ title, description, children }: PageHeaderProps) => (
     <header className="page-header">
       <div className="top-bar-container">
         <Link to="/">
@@ -30,6 +30,5 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, description, children }:
       </div>
     </header>
   )
-}
 
 export default PageHeader

@@ -7,7 +7,7 @@ charset = utf-8
 trim_trailing_whitespace = false
 insert_final_newline = true
 spaces_around_operators = true
-end_of_line = auto
+end_of_line = 'auto'
 max_line_length = off
 
 [*.py]
