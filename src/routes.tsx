@@ -9,8 +9,8 @@ function Routes(): ReactElement {
   return (
     <BrowserRouter>
       <Route path="/" exact component={Landing} />
-      <Route path="/call-form" exact component={CallForm} />
-      <Route path="/login" exact component={Login} />
+      <Route path="/call-form" component={CallForm} />
+      <Route path="/login" component={Login} />
     </BrowserRouter>
   )
 }
