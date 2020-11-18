@@ -11,7 +11,7 @@ import './styles.css';
 import apiCore from '../../services/apiCore';
 import apiCep from '../../services/apiCep'
 
-function TeacherForm(): ReactElement {
+function CallForm(): ReactElement {
   const history = useHistory();
 
   const [name, setName] = useState('');
@@ -207,7 +207,7 @@ function TeacherForm(): ReactElement {
               Preencha todos os dados
             </p>
             <button type="submit">
-              Salvar Cadastro
+              Salvar Chamado
             </button>
           </footer>
         </form>
@@ -216,4 +216,4 @@ function TeacherForm(): ReactElement {
   );
 }
 
-export default TeacherForm;
+export default CallForm;

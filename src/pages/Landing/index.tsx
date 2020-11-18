@@ -25,7 +25,7 @@ function Landing(): ReactElement {
     <div id="page-landing">
       <div id="page-landing-content" className="container">
         <div className="logo-container">
-          <img src={logoImg} alt="Helppy" />
+          <img src={logoImg} alt="Helppy" className="logo-image" />
           <h2>Sua plataforma de Help Desk.</h2>
         </div>
         <img src={landingImg} alt="Plataforma de help desk" className="hero-image" />

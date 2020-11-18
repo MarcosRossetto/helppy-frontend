@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
-import logoImg from '../../assets/images/logo.svg'
 import backIcon from '../../assets/images/icons/back.svg'
 
 import './styles.css'
+
+const logoImg = 'https://fontmeme.com/permalink/201116/ccf8651217956c62bc599c5559f05080.png'
 
 interface PageHeaderProps {
   title: string
