@@ -24,9 +24,6 @@ function Landing(): ReactElement {
 
   return (
     <div id="page-landing">
-      <Link to="/login" className="login">
-        Login
-      </Link>
       <div id="page-landing-content" className="container">
         <div className="logo-container">
           <img src={logoImg} alt="Helppy" className="logo-image" />
@@ -38,6 +35,9 @@ function Landing(): ReactElement {
           <Link to="/call-form" className="call">
             <img src={studyIcon} alt="Abrir Chamado" />
             Abrir Chamado
+          </Link>
+          <Link to="/login" className="login">
+            Login
           </Link>
         </div>
 

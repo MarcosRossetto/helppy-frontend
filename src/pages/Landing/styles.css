@@ -10,25 +10,6 @@
   background: var(--color-primary);
 }
 
-#page-landing a.login {
-  padding: 1rem;
-  border-radius: 0.8rem;
-  font: 700 2.0rem Archivo;
-  text-decoration: none;
-  color: var(--color-button-text);
-  transition: background-color 0.2s;
-  position: absolute;
-  margin-top: 1rem;
-  margin-right: 1rem;
-  top: 0;
-  right: 0;
-  background: transparent;
-}
-
-#page-landing a.login:hover {
-  background: var(--color-secundary-dark);
-}
-
 .hero-image {
   width: 100%;
 }
@@ -88,6 +69,21 @@
   background: var(--color-secundary-dark);
 }
 
+#page-landing a.login {
+  width: 10rem;
+  height: 5rem;
+  padding: 1rem;
+  position: absolute;
+  margin-top: -1rem;
+  top: 0;
+  right: 0;
+  background: transparent;
+}
+
+#page-landing a.login:hover {
+  background: var(--color-secundary-dark);
+}
+
 .total-connections {
   font-size: 1.4rem;
 
@@ -111,6 +107,11 @@
       'logo hero hero'
       'buttons buttons total'
     ;
+  }
+
+  #page-landing a.login {
+    margin-top: 1rem;
+    margin-right: 1rem;
   }
 
   .logo-container {
