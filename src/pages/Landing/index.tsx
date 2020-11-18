@@ -5,7 +5,6 @@ import apiCore from '../../services/apiCore'
 import landingImg from '../../assets/images/landing.svg'
 
 import studyIcon from '../../assets/images/icons/study.svg'
-import admIcon from '../../assets/images/icons/warning.svg'
 import whiteHeartIcon from '../../assets/images/icons/white-heart.svg'
 
 import './styles.css'

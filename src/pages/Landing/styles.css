@@ -73,10 +73,9 @@
   width: 10rem;
   height: 5rem;
   padding: 1rem;
-  position: absolute;
-  margin-top: -1rem;
-  top: 50;
-  right: 5;
+  position: fixed;
+  top: 0px;
+  right: 0px;
   background: transparent;
 }
 
