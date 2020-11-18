@@ -5,6 +5,7 @@ import apiCore from '../../services/apiCore'
 import landingImg from '../../assets/images/landing.svg'
 
 import studyIcon from '../../assets/images/icons/study.svg'
+import admIcon from '../../assets/images/icons/warning.svg'
 import whiteHeartIcon from '../../assets/images/icons/white-heart.svg'
 
 import './styles.css'
@@ -23,6 +24,9 @@ function Landing(): ReactElement {
 
   return (
     <div id="page-landing">
+      <Link to="/login" className="login">
+        Login
+      </Link>
       <div id="page-landing-content" className="container">
         <div className="logo-container">
           <img src={logoImg} alt="Helppy" className="logo-image" />
@@ -31,7 +35,7 @@ function Landing(): ReactElement {
         <img src={landingImg} alt="Plataforma de help desk" className="hero-image" />
 
         <div className="buttons-container">
-          <Link to="/call-form" className="study">
+          <Link to="/call-form" className="call">
             <img src={studyIcon} alt="Abrir Chamado" />
             Abrir Chamado
           </Link>

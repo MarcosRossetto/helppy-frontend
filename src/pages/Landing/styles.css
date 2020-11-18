@@ -10,6 +10,25 @@
   background: var(--color-primary);
 }
 
+#page-landing a.login {
+  padding: 1rem;
+  border-radius: 0.8rem;
+  font: 700 2.0rem Archivo;
+  text-decoration: none;
+  color: var(--color-button-text);
+  transition: background-color 0.2s;
+  position: absolute;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  top: 0;
+  right: 0;
+  background: transparent;
+}
+
+#page-landing a.login:hover {
+  background: var(--color-secundary-dark);
+}
+
 .hero-image {
   width: 100%;
 }
@@ -33,6 +52,7 @@
 .buttons-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 3.2rem 0;
 }
 
@@ -60,11 +80,11 @@
   width: 4rem;
 }
 
-.buttons-container a.study {
+.buttons-container a.call {
   background: var(--color-secundary);
 }
 
-.buttons-container a.study:hover {
+.buttons-container a.call:hover {
   background: var(--color-secundary-dark);
 }
 
