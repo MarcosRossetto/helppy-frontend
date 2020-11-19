@@ -19,39 +19,100 @@ function CallForm(): ReactElement {
   const history = useHistory();
 
   const [name, setName] = useState('');
+  const [errorsName, setErrorsName] = useState({ type: false, msg: '' })
+
   const [email, setEmail] = useState('');
-  const [desc, setDesc] = useState('');
+  const[errorsEmail, setErrorsEmail] = useState({ type: false, msg: '' })
+
   const [whatsapp, setWhatsapp] = useState('');
+  const [errorsWhatsapp, setErrorsWhatsapp] = useState({ type: false, msg: '' })
+
+  const [cep, setCep] = useState('');
+  const [errorsCep, setErrorsCep] = useState({ type: false, msg: '' })
+
   const [address, setAddress] = useState('');
-  const [addressNumber, setAddressNumber] = useState('');
   const [addressDistrict, setAddressDistrict] = useState('');
   const [addressUf, setAddressUf] = useState('');
-  // const [cpf, setCpf] = useState('');
-  const [cep, setCep] = useState('');
 
+  const [addressNumber, setAddressNumber] = useState('');
+  const [errorsAddressNumber, setErrorsAddressNumber] = useState({ type: false, msg: '' })
+
+  // const [cpf, setCpf] = useState('');
+
+  const [desc, setDesc] = useState('');
   const [category, setSubject] = useState('');
 
   const [scheduleItems, setScheduleItems] = useState([
     { week_day: 0, from: '', to: '' },
   ]);
 
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function searchAddress(e: any) {
     const cep1 = cepMask(e.target.value)
     setCep(cep1)
     const validCep = /^[0-9]{8}$/
-    if(!cep1 || cep1.length < 8) return
-
+    if(!cep1 || cep1.length < 8) {
+      setErrorsCep({ type: true, msg: 'não pode ser vazio e deve conter 8 números.' })
+    }
     const cepUnmask = cep1.replace(/\D/g, '')
     if(validCep.test(cepUnmask)){
       apiCep.get(`${cepUnmask}/json`).then((data) => {
         const addressData = data.data
+        if(addressData.erro === true) setErrorsCep({ type: true, msg: 'inválido.' })
+        else {
+        setErrorsCep({ type: false, msg: '' })
         setAddress(addressData.logradouro)
         setAddressDistrict(addressData.bairro)
         setAddressUf(addressData.uf)
+        }
       }).catch(() => {
         alert('Erro ao buscar CEP')
       })
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function validateWhatsapp(e: any) {
+    setWhatsapp(phoneMask(e.target.value))
+    if(e.target.value.length < 15) {
+      setErrorsWhatsapp({ type: true, msg: 'não pode ser vazio e deve conter 11 números.' })
+    }
+    else {
+    setErrorsWhatsapp({ type: false, msg: '' })
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function validateName(e: any) {
+    setName(e.target.value)
+    if(e.target.value.length < 3) {
+      setErrorsName({ type: true, msg: 'não pode ser vazio e deve conter ao menos 3 letras.' })
+    }
+    else {
+    setErrorsName({ type: false, msg: '' })
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function validateEmail(e: any) {
+    setEmail(e.target.value)
+    if(e.target.value.length < 5){
+      setErrorsEmail({ type: true, msg: 'não pode ser vazio e deve conter ao menos 5 caracteres.' })
+    }
+    else {
+      setErrorsEmail({ type: false, msg: '' })
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function validateAddressNumber(e: any) {
+    setAddressNumber(e.target.value)
+    if(e.target.value.length < 1){
+      setErrorsAddressNumber({ type: true, msg: 'não pode ser vazio.' })
+    }
+    else {
+      setErrorsAddressNumber({ type: false, msg: '' })
     }
   }
 
@@ -100,15 +161,17 @@ function CallForm(): ReactElement {
             <Input
               name="name"
               label="Nome Completo"
+              error={errorsName}
               value={name}
-              onChange={(e) => { setName(e.target.value) }}
+              onChange={validateName}
             />
 
             <Input
               name="email"
               label="Email"
+              error={errorsEmail}
               value={email}
-              onChange={(e) => { setEmail(e.target.value) }}
+              onChange={validateEmail}
             />
 
             {/* <Input
@@ -121,9 +184,10 @@ function CallForm(): ReactElement {
 
             <Input
               name="whatsapp"
+              error={errorsWhatsapp}
               label="WhatsApp"
               value={whatsapp}
-              onChange={(e) => { setWhatsapp(phoneMask(e.target.value)) }}
+              onChange={validateWhatsapp}
               maxLength={15}
             />
 
@@ -131,6 +195,7 @@ function CallForm(): ReactElement {
               name="cep1"
               label="CEP"
               value={cep}
+              error={errorsCep}
               onChange={searchAddress}
               maxLength={9}
             />
@@ -138,6 +203,7 @@ function CallForm(): ReactElement {
             <Input
               name="address"
               label="Logradouro"
+              error={{ type: false }}
               value={address}
               disabled
             />
@@ -146,6 +212,7 @@ function CallForm(): ReactElement {
               <Input 
                 name="district"
                 label="Bairro"
+                error={{ type: false }}
                 value={addressDistrict}
                 disabled
               />
@@ -153,6 +220,7 @@ function CallForm(): ReactElement {
               <Input 
                 name="uf"
                 label="UF"
+                error={{ type: false }}
                 value={addressUf}
                 disabled
               />
@@ -160,8 +228,9 @@ function CallForm(): ReactElement {
               <Input 
                 name="number"
                 label="Número"
+                error={errorsAddressNumber}
                 value={addressNumber}
-                onChange={(e) => { setAddressNumber(e.target.value) }}
+                onChange={validateAddressNumber}
               />
             </div>
 
