@@ -9,12 +9,16 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     value: string
     label: string
   }>
+  error: {
+    type: boolean,
+    msg: string
+  }
 }
 
-const Select: React.FC<SelectProps> = ({ label, name, options, ...rest }: SelectProps) => {
+const Select: React.FC<SelectProps> = ({ label, name, error, options, ...rest }: SelectProps) => {
   return (
     <div className="select-block">
-      <label htmlFor={name}>{label}</label>
+      <label className={`${ error.type ? 'error-label' : 'success-label' }`} htmlFor={name}>{`${label} ${error.type ? error.msg : ''}`}</label>
       <select value="" id={name} {...rest}>
         <option value="" disabled hidden>Selecione uma opção</option>
         {options.map(option => {

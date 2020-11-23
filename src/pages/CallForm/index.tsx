@@ -12,8 +12,10 @@ import apiCore from '../../services/apiCore';
 import apiCep from '../../services/apiCep'
 
 // import cpfMask from '../../services/cpfMask'
-import cepMask from '../../services/masks/cepMask'
-import phoneMask from '../../services/masks/phoneMask'
+import cepMask from '../../utils/masks/cepMask'
+import phoneMask from '../../utils/masks/phoneMask'
+
+import { testAddressNumber, testCategory, testCep, testEmail, testName, testWeekday, testWhatsapp } from '../../utils/validations/validateInput'
 
 function CallForm(): ReactElement {
   const history = useHistory();
@@ -22,7 +24,7 @@ function CallForm(): ReactElement {
   const [errorsName, setErrorsName] = useState({ type: false, msg: '' })
 
   const [email, setEmail] = useState('');
-  const[errorsEmail, setErrorsEmail] = useState({ type: false, msg: '' })
+  const [errorsEmail, setErrorsEmail] = useState({ type: false, msg: '' })
 
   const [whatsapp, setWhatsapp] = useState('');
   const [errorsWhatsapp, setErrorsWhatsapp] = useState({ type: false, msg: '' })
@@ -37,87 +39,91 @@ function CallForm(): ReactElement {
   const [addressNumber, setAddressNumber] = useState('');
   const [errorsAddressNumber, setErrorsAddressNumber] = useState({ type: false, msg: '' })
 
+
   // const [cpf, setCpf] = useState('');
 
   const [desc, setDesc] = useState('');
-  const [category, setSubject] = useState('');
 
-  const [scheduleItems, setScheduleItems] = useState([
-    { week_day: 0, from: '', to: '' },
-  ]);
+  const [category, setCategory] = useState('');
+  const [errorsCategory, setErrorsCategory] = useState({ type: false, msg: '' })
 
+  const [weekday, setWeekday] = useState('')
+  const [errorsWeekday, setErrorsWeekday] = useState({ type: false, msg: '' })
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function searchAddress(e: any) {
-    const cep1 = cepMask(e.target.value)
-    setCep(cep1)
-    const validCep = /^[0-9]{8}$/
-    if(!cep1 || cep1.length < 8) {
-      setErrorsCep({ type: true, msg: 'não pode ser vazio e deve conter 8 números.' })
-    }
-    const cepUnmask = cep1.replace(/\D/g, '')
-    if(validCep.test(cepUnmask)){
-      apiCep.get(`${cepUnmask}/json`).then((data) => {
-        const addressData = data.data
-        if(addressData.erro === true) setErrorsCep({ type: true, msg: 'inválido.' })
-        else {
-        setErrorsCep({ type: false, msg: '' })
-        setAddress(addressData.logradouro)
-        setAddressDistrict(addressData.bairro)
-        setAddressUf(addressData.uf)
-        }
-      }).catch(() => {
-        alert('Erro ao buscar CEP')
-      })
+  async function searchAddress(e: any) {
+    setCep(cepMask(e.target.value))
+    const cepUnmasked = e.target.value.replace(/\D/g, '')
+    setErrorsCep(testCep(cepUnmasked))
+
+    if(cepUnmasked.length < 8) return
+
+    try {
+      const response = await apiCep.get(`${cepUnmasked}/json`)
+      if(response.data.erro) {
+        setErrorsCep(testCep(cepUnmasked, true))
+        setAddress('')
+        setAddressDistrict('')
+        setAddressUf('')
+        return
+      }
+      setAddress(response.data.logradouro)
+      setAddressDistrict(response.data.bairro)
+      setAddressUf(response.data.uf)
+    } catch(error) {
+      alert('Erro ao buscar CEP')
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function validateWhatsapp(e: any) {
     setWhatsapp(phoneMask(e.target.value))
-    if(e.target.value.length < 15) {
-      setErrorsWhatsapp({ type: true, msg: 'não pode ser vazio e deve conter 11 números.' })
-    }
-    else {
-    setErrorsWhatsapp({ type: false, msg: '' })
-    }
+    setErrorsWhatsapp(testWhatsapp(e.target.value))
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function validateName(e: any) {
     setName(e.target.value)
-    if(e.target.value.length < 3) {
-      setErrorsName({ type: true, msg: 'não pode ser vazio e deve conter ao menos 3 letras.' })
-    }
-    else {
-    setErrorsName({ type: false, msg: '' })
-    }
+    setErrorsName(testName(e.target.value))
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function validateEmail(e: any) {
     setEmail(e.target.value)
-    if(e.target.value.length < 5){
-      setErrorsEmail({ type: true, msg: 'não pode ser vazio e deve conter ao menos 5 caracteres.' })
-    }
-    else {
-      setErrorsEmail({ type: false, msg: '' })
-    }
+    setErrorsEmail(testEmail(e.target.value))
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function validateAddressNumber(e: any) {
     setAddressNumber(e.target.value)
-    if(e.target.value.length < 1){
-      setErrorsAddressNumber({ type: true, msg: 'não pode ser vazio.' })
-    }
-    else {
-      setErrorsAddressNumber({ type: false, msg: '' })
-    }
+    setErrorsAddressNumber(testAddressNumber(e.target.value))
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function validateCategory(e: any) {
+    setCategory(e.target.value)
+    setErrorsCategory(testCategory(e.target.value))
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function validateWeekday(e: any) {
+    setWeekday(e.target.value)
+      setErrorsWeekday(testWeekday(e.target.value))
+    }
 
   function handleCreateClass(e: FormEvent) {
     e.preventDefault();
+    const validForm = [name, email, whatsapp, cep, addressNumber, category, weekday]
+    if(validForm.indexOf('') !== -1) {
+      setErrorsName(testName(name))
+      setErrorsEmail(testEmail(email))
+      setErrorsWhatsapp(testWhatsapp(whatsapp))
+      setErrorsCep(testCep(cep))
+      setErrorsAddressNumber(testAddressNumber(addressNumber))
+      setErrorsCategory(testCategory(category))
+      setErrorsWeekday(testWeekday(weekday))
+      return
+    }
 
     apiCore.post('classes', {
       name,
@@ -125,7 +131,7 @@ function CallForm(): ReactElement {
       whatsapp,
       desc,
       category,
-      schedule: scheduleItems,
+      weekday,
     }).then(() => {
       alert('Cadastro realizado com sucesso!');
 
@@ -133,18 +139,6 @@ function CallForm(): ReactElement {
     }).catch(() => {
       alert('Erro no cadastro.');
     });
-  }
-
-  function setScheduleItemValue(position: number, field: string, value: string) {
-    const updateScheduleItems = scheduleItems.map((scheduleItem, index) => {
-      if (index === position) {
-        return { ...scheduleItem, [field]: value };
-      }
-
-      return scheduleItem;
-    });
-
-    setScheduleItems(updateScheduleItems);
   }
 
   return (
@@ -231,6 +225,7 @@ function CallForm(): ReactElement {
                 error={errorsAddressNumber}
                 value={addressNumber}
                 onChange={validateAddressNumber}
+                maxLength={8}
               />
             </div>
 
@@ -241,8 +236,9 @@ function CallForm(): ReactElement {
             <Select
               name="category"
               label="Categoria"
+              error={errorsCategory}
               value={category}
-              onChange={(e) => { setSubject(e.target.value) }}
+              onChange={validateCategory}
               options={[
                 { value: 'Categoria1', label: 'Categoria1' },
                 { value: 'Categoria2', label: 'Categoria2' },
@@ -263,26 +259,19 @@ function CallForm(): ReactElement {
             <legend>
               Horários Disponíveis
             </legend>
-            {scheduleItems.map((scheduleItem, index) => {
-              return (
-                <div key={index} className="schedule-item">
-                  <Select
-                    name="week_day"
-                    label="Dia da Semana"
-                    value={scheduleItem.week_day}
-                    onChange={e => setScheduleItemValue(index, 'week_day', e.target.value)}
-                    options={[
-                      { value: '0', label: '18/11/2020, 08:00' },
-                      { value: '1', label: '18/11/2020, 13:30' },
-                      { value: '2', label: '20/11/2020, 08:00' },
-                      { value: '3', label: '21/11/2020, 13:30' },
-                      { value: '4', label: '22/11/2020, 08:00' },
-                      { value: '5', label: '22/11/2020, 13:30' },
-                    ]}
-                  />
-                </div>
-              );
-            })}
+            <Select
+              name="weekday"
+              label="Dia da Semana"
+              error={errorsWeekday}
+              value={weekday}
+              onChange={validateWeekday}
+              options={[
+                { value: '0', label: '25/11/2020, 08:00' },
+                { value: '1', label: '26/11/2020, 13:30' },
+                { value: '2', label: '30/11/2020, 16:00' },
+                { value: '3', label: '25/12/2020, 18:00' },
+              ]}
+            />
           </fieldset>
 
           <footer>
