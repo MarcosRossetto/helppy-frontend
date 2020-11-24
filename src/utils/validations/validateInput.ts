@@ -113,6 +113,19 @@ export function testCategory(value: string): InputError {
   return errors
 }
 
+export function testDescription(value: string): InputError {
+  const errors = {
+    type: false,
+    msg: '',
+  }
+  if(!value || value.length <= 0) {
+    errors.type = true
+    errors.msg = 'não pode ser vazio.'
+    return errors
+  }
+  return errors
+}
+
 export function testWeekday(value: string): InputError {
   const errors = {
     type: false,
@@ -121,6 +134,24 @@ export function testWeekday(value: string): InputError {
   if(!value || value.length <= 0) {
     errors.type = true
     errors.msg = 'não pode ser vazio.'
+    return errors
+  }
+  return errors
+}
+
+export function testPassword(value: string): InputError {
+  const errors = {
+    type: false,
+    msg: '',
+  }
+  if(!value || value.length <= 0) {
+    errors.type = true
+    errors.msg = 'não pode ser vazio.'
+    return errors
+  }
+  if(value.length < 6) {
+    errors.type = true
+    errors.msg = 'é composta por mais caracteres.'
     return errors
   }
   return errors

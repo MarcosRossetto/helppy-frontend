@@ -5,12 +5,16 @@ import './styles.css'
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string
   name: string
+  error: {
+    type: boolean,
+    msg: string
+  }
 }
 
-const Textarea: React.FC<TextareaProps> = ({ label, name, ...rest }: TextareaProps) => {
+const Textarea: React.FC<TextareaProps> = ({ label, error, name, ...rest }: TextareaProps) => {
   return (
     <div className="textarea-block">
-      <label htmlFor={name}>{label}</label>
+      <label className={`${ error.type ? 'error-label' : 'success-label' }`} htmlFor={name}>{`${label} ${error.type ? error.msg : ''}`}</label>
       <textarea id={name} {...rest} />
     </div>
   )

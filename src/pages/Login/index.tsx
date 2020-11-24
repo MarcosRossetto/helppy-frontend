@@ -5,51 +5,49 @@ import Input from '../../components/Input';
 
 import './styles.css';
 import apiCore from '../../services/apiCore';
+import { testEmail, testPassword } from '../../utils/validations/validateInput'
 
 function Login(): ReactElement {
   const history = useHistory();
 
   const [email, setEmail] = useState('');
-  const[errorsEmail, setErrorsEmail] = useState({ type: false, msg: '' })
+  const [errorsEmail, setErrorsEmail] = useState({ type: false, msg: '' })
 
   const [password, setPassword] = useState('');
-  const[errorsPassword, setErrorsPassword] = useState({ type: false, msg: '' })
+  const [errorsPassword, setErrorsPassword] = useState({ type: false, msg: '' })
 
   function handleCreateClass(e: FormEvent) {
     e.preventDefault();
+    const validForm = [email, password]
+    if(validForm.indexOf('') !== -1 || testPassword(password).type === true || testEmail(email).type === true) {
+      setErrorsEmail(testEmail(email))
+      setErrorsPassword(testPassword(password))
+      alert('Login Inválido')
+      return
+    }
 
     apiCore.post('classes', {
       email,
       password,
     }).then(() => {
-      alert('Cadastro realizado com sucesso!');
+      alert('Login realizado com sucesso!');
 
       history.push('/');
     }).catch(() => {
-      alert('Erro no cadastro.');
+      alert('Erro no login.');
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function validateEmail(e: any) {
     setEmail(e.target.value)
-    if(e.target.value.length < 5){
-      setErrorsEmail({ type: true, msg: 'não pode ser vazio e deve conter ao menos 5 caracteres.' })
-    }
-    else {
-      setErrorsEmail({ type: false, msg: '' })
-    }
+    setErrorsEmail(testEmail(e.target.value))
   }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function validatePassword(e: any) {
       setPassword(e.target.value)
-      if(e.target.value.length < 6){
-        setErrorsPassword({ type: true, msg: 'não pode ser vazio e deve conter ao menos 6 caracteres.' })
-      }
-      else {
-        setErrorsPassword({ type: false, msg: '' })
-      }
+      setErrorsPassword(testPassword(e.target.value))
     }
 
   return (

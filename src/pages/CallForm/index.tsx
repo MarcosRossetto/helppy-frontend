@@ -15,7 +15,7 @@ import apiCep from '../../services/apiCep'
 import cepMask from '../../utils/masks/cepMask'
 import phoneMask from '../../utils/masks/phoneMask'
 
-import { testAddressNumber, testCategory, testCep, testEmail, testName, testWeekday, testWhatsapp } from '../../utils/validations/validateInput'
+import { testAddressNumber, testCategory, testCep, testDescription, testEmail, testName, testWeekday, testWhatsapp } from '../../utils/validations/validateInput'
 
 function CallForm(): ReactElement {
   const history = useHistory();
@@ -42,10 +42,11 @@ function CallForm(): ReactElement {
 
   // const [cpf, setCpf] = useState('');
 
-  const [desc, setDesc] = useState('');
-
   const [category, setCategory] = useState('');
   const [errorsCategory, setErrorsCategory] = useState({ type: false, msg: '' })
+
+  const [description, setDescription] = useState('');
+  const [errorsDescription, setErrorsDescription] = useState({ type: false, msg: '' })
 
   const [weekday, setWeekday] = useState('')
   const [errorsWeekday, setErrorsWeekday] = useState({ type: false, msg: '' })
@@ -106,22 +107,38 @@ function CallForm(): ReactElement {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function validateDescription(e: any) {
+    setDescription(e.target.value)
+    setErrorsDescription(testDescription(e.target.value))
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function validateWeekday(e: any) {
     setWeekday(e.target.value)
-      setErrorsWeekday(testWeekday(e.target.value))
+    setErrorsWeekday(testWeekday(e.target.value))
     }
 
   function handleCreateClass(e: FormEvent) {
     e.preventDefault();
-    const validForm = [name, email, whatsapp, cep, addressNumber, category, weekday]
-    if(validForm.indexOf('') !== -1) {
+    const validForm = [name, email, whatsapp, cep, addressNumber, category, description, weekday]
+    if(validForm.indexOf('') !== -1
+      || testName(name).type === true
+      || testEmail(email).type === true
+      || testWhatsapp(whatsapp).type === true
+      || testCep(cep).type === true
+      || testAddressNumber(addressNumber).type === true
+      || testCategory(category).type === true
+      || testDescription(description).type === true
+      || testWeekday(weekday).type === true) {
       setErrorsName(testName(name))
       setErrorsEmail(testEmail(email))
       setErrorsWhatsapp(testWhatsapp(whatsapp))
       setErrorsCep(testCep(cep))
       setErrorsAddressNumber(testAddressNumber(addressNumber))
       setErrorsCategory(testCategory(category))
+      setErrorsDescription(testDescription(description))
       setErrorsWeekday(testWeekday(weekday))
+      alert('Erro ao cadastrar chamado.')
       return
     }
 
@@ -129,7 +146,7 @@ function CallForm(): ReactElement {
       name,
       email,
       whatsapp,
-      desc,
+      description,
       category,
       weekday,
     }).then(() => {
@@ -248,10 +265,11 @@ function CallForm(): ReactElement {
             />
             
             <Textarea
-              name="desc"
+              name="description"
               label="Descrição"
-              value={desc}
-              onChange={(e) => { setDesc(e.target.value) }}
+              error={errorsDescription}
+              value={description}
+              onChange={validateDescription}
             />
           </fieldset>
 
