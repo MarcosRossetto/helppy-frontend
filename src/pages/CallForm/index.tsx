@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, FormEvent } from 'react';
+import React, { ReactElement, useState, FormEvent , useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import PageHeader from '../../components/PageHeader';
 import Input from '../../components/Input';
@@ -16,6 +16,8 @@ import cepMask from '../../utils/masks/cepMask'
 import phoneMask from '../../utils/masks/phoneMask'
 
 import { testAddressNumber, testCategory, testCep, testDescription, testEmail, testName, testWeekday, testWhatsapp } from '../../utils/validations/validateInput'
+
+
 
 function CallForm(): ReactElement {
   const history = useHistory();
@@ -42,8 +44,10 @@ function CallForm(): ReactElement {
 
   // const [cpf, setCpf] = useState('');
 
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('')
   const [errorsCategory, setErrorsCategory] = useState({ type: false, msg: '' })
+
+  const [listCategory, setListCategory] = useState([])
 
   const [description, setDescription] = useState('');
   const [errorsDescription, setErrorsDescription] = useState({ type: false, msg: '' })
@@ -118,7 +122,7 @@ function CallForm(): ReactElement {
     setErrorsWeekday(testWeekday(e.target.value))
     }
 
-  function handleCreateClass(e: FormEvent) {
+  async function handleCreateClass(e: FormEvent) {
     e.preventDefault();
     const validForm = [name, email, whatsapp, cep, addressNumber, category, description, weekday]
     if(validForm.indexOf('') !== -1
@@ -138,25 +142,43 @@ function CallForm(): ReactElement {
       setErrorsCategory(testCategory(category))
       setErrorsDescription(testDescription(description))
       setErrorsWeekday(testWeekday(weekday))
-      alert('Erro ao cadastrar chamado.')
-      return
+      alert('Erro no formulário.')
+      
+    }
+    try {
+      const response = await apiCore.post('/calls', {
+        user: {
+          name,
+          email,
+          whatsapp,
+          address: {
+            cep,
+            address,
+            district: addressDistrict,
+            uf: addressUf,
+            number: addressNumber,
+          },
+        },
+        description,
+        category,
+        schedule: '25/11/2020, 13:00',
+      })
+      if(response.status === 201) {
+        alert('Cadastro realizado com sucesso. Um email de confirmação foi enviado. Obs: Verifique sua caixa de spam, caso necessário.')
+        history.push('/')
+      }
+      else alert('Erro ao cadastrar usuário')
+    } catch (error) {
+      alert('Unexpected error.')
     }
 
-    apiCore.post('classes', {
-      name,
-      email,
-      whatsapp,
-      description,
-      category,
-      weekday,
-    }).then(() => {
-      alert('Cadastro realizado com sucesso!');
-
-      history.push('/');
-    }).catch(() => {
-      alert('Erro no cadastro.');
-    });
   }
+
+  useEffect(() => {
+    apiCore.get('categories-calls').then(response => {
+      setListCategory(response.data)
+    })
+  }, [])
 
   return (
     <div id="page-call-form" className="container">
@@ -256,12 +278,7 @@ function CallForm(): ReactElement {
               error={errorsCategory}
               value={category}
               onChange={validateCategory}
-              options={[
-                { value: 'Categoria1', label: 'Categoria1' },
-                { value: 'Categoria2', label: 'Categoria2' },
-                { value: 'Categoria3', label: 'Categoria3' },
-                { value: 'Categoria4', label: 'Categoria4' },
-              ]}
+              options={listCategory}
             />
             
             <Textarea
@@ -284,10 +301,10 @@ function CallForm(): ReactElement {
               value={weekday}
               onChange={validateWeekday}
               options={[
-                { value: '0', label: '25/11/2020, 08:00' },
-                { value: '1', label: '26/11/2020, 13:30' },
-                { value: '2', label: '30/11/2020, 16:00' },
-                { value: '3', label: '25/12/2020, 18:00' },
+                { id: '0', name: '25/11/2020, 08:00' },
+                { id: '1', name: '26/11/2020, 13:30' },
+                { id: '2', name: '30/11/2020, 16:00' },
+                { id: '3', name: '25/12/2020, 18:00' },
               ]}
             />
           </fieldset>
