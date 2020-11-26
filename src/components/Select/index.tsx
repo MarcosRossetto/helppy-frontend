@@ -10,7 +10,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     name: string
   }>
   error: {
-    type: boolean,
+    type: boolean
     msg: string
   }
 }

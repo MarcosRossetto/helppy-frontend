@@ -52,11 +52,12 @@ function CallForm(): ReactElement {
   const [description, setDescription] = useState('');
   const [errorsDescription, setErrorsDescription] = useState({ type: false, msg: '' })
 
-  const [weekday, setWeekday] = useState('')
-  const [errorsWeekday, setErrorsWeekday] = useState({ type: false, msg: '' })
+  const [schedule, setSchedule] = useState('')
+  const [errorsSchedule, setErrorsSchedule] = useState({ type: false, msg: '' })
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async function searchAddress(e: any) {
+  const [listSchedule, setListSchedule] = useState([])
+
+  async function searchAddress(e) {
     setCep(cepMask(e.target.value))
     const cepUnmasked = e.target.value.replace(/\D/g, '')
     setErrorsCep(testCep(cepUnmasked))
@@ -80,51 +81,44 @@ function CallForm(): ReactElement {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function validateWhatsapp(e: any) {
+  function validateWhatsapp(e) {
     setWhatsapp(phoneMask(e.target.value))
     setErrorsWhatsapp(testWhatsapp(e.target.value))
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function validateName(e: any) {
+  function validateName(e) {
     setName(e.target.value)
     setErrorsName(testName(e.target.value))
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function validateEmail(e: any) {
+  function validateEmail(e) {
     setEmail(e.target.value)
     setErrorsEmail(testEmail(e.target.value))
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function validateAddressNumber(e: any) {
+  function validateAddressNumber(e) {
     setAddressNumber(e.target.value)
     setErrorsAddressNumber(testAddressNumber(e.target.value))
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function validateCategory(e: any) {
+  function validateCategory(e) {
     setCategory(e.target.value)
     setErrorsCategory(testCategory(e.target.value))
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function validateDescription(e: any) {
+  function validateDescription(e) {
     setDescription(e.target.value)
     setErrorsDescription(testDescription(e.target.value))
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function validateWeekday(e: any) {
-    setWeekday(e.target.value)
-    setErrorsWeekday(testWeekday(e.target.value))
+  function validateWeekday(e) {
+    setSchedule(e.target.value)
+    setErrorsSchedule(testWeekday(e.target.value))
     }
 
   async function handleCreateClass(e: FormEvent) {
     e.preventDefault();
-    const validForm = [name, email, whatsapp, cep, addressNumber, category, description, weekday]
+    const validForm = [name, email, whatsapp, cep, addressNumber, category, description, schedule]
     if(validForm.indexOf('') !== -1
       || testName(name).type === true
       || testEmail(email).type === true
@@ -133,7 +127,7 @@ function CallForm(): ReactElement {
       || testAddressNumber(addressNumber).type === true
       || testCategory(category).type === true
       || testDescription(description).type === true
-      || testWeekday(weekday).type === true) {
+      || testWeekday(schedule).type === true) {
       setErrorsName(testName(name))
       setErrorsEmail(testEmail(email))
       setErrorsWhatsapp(testWhatsapp(whatsapp))
@@ -141,9 +135,9 @@ function CallForm(): ReactElement {
       setErrorsAddressNumber(testAddressNumber(addressNumber))
       setErrorsCategory(testCategory(category))
       setErrorsDescription(testDescription(description))
-      setErrorsWeekday(testWeekday(weekday))
+      setErrorsSchedule(testWeekday(schedule))
       alert('Erro no formulário.')
-      
+      return
     }
     try {
       const response = await apiCore.post('/calls', {
@@ -161,7 +155,7 @@ function CallForm(): ReactElement {
         },
         description,
         category,
-        schedule: '25/11/2020, 13:00',
+        schedule,
       })
       if(response.status === 201) {
         alert('Cadastro realizado com sucesso. Um email de confirmação foi enviado. Obs: Verifique sua caixa de spam, caso necessário.')
@@ -176,7 +170,16 @@ function CallForm(): ReactElement {
 
   useEffect(() => {
     apiCore.get('categories-calls').then(response => {
-      setListCategory(response.data)
+      const newCategory = response.data.category.map(item => {
+        return { id: item.id, name: item.category }
+      })
+      setListCategory(newCategory)
+    })
+    apiCore.get('schedules/active').then(response => {
+      const newSchedule = response.data.schedule.map(item => {
+        return { id: item.id, name: item.schedule }
+      })
+      setListSchedule(newSchedule)
     })
   }, [])
 
@@ -295,17 +298,12 @@ function CallForm(): ReactElement {
               Horários Disponíveis
             </legend>
             <Select
-              name="weekday"
+              name="schedule"
               label="Dia da Semana"
-              error={errorsWeekday}
-              value={weekday}
+              error={errorsSchedule}
+              value={schedule}
               onChange={validateWeekday}
-              options={[
-                { id: '0', name: '25/11/2020, 08:00' },
-                { id: '1', name: '26/11/2020, 13:30' },
-                { id: '2', name: '30/11/2020, 16:00' },
-                { id: '3', name: '25/12/2020, 18:00' },
-              ]}
+              options={listSchedule}
             />
           </fieldset>
 
