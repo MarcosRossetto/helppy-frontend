@@ -18,11 +18,8 @@
   border-radius: 50%;
 }
 
-.teacher-item header div {
-  margin-left: 2.4rem;
-}
 
-.teacher-item header div strong {
+.teacher-item header div .title {
   font: 700 2.4rem Archivo;
   display: block;
   color: var(--color-text-title);
@@ -34,7 +31,11 @@
   margin-top: 0.4rem;
 }
 
-.teacher-item > p {
+.textarea {
+  margin-bottom: 2.4rem;
+}
+
+.teacher-item > p, .textarea {
   padding: 0 2rem;
   font-size: 1.6rem;
   line-height: 2.8rem;
@@ -56,7 +57,7 @@
   display: block;
 }
 
-.teacher-item footer a {
+.teacher-item footer a, .teacher-item footer button {
   width: 20rem;
   height: 5.6rem;
   background: var(--color-secundary);
@@ -70,9 +71,10 @@
   justify-content: space-evenly;
   transition: 0.2s;
   text-decoration: none;
+  margin-right: 1rem;
 }
 
-.teacher-item footer a:hover {
+.teacher-item footer a:hover, .teacher-item footer button:hover {
   background: var(--color-secundary-dark);
 }
 
@@ -82,7 +84,7 @@
     padding: 3.2rem;
   }
 
-  .teacher-item > p {
+  .teacher-item > p, .textarea {
     padding: 0 3.2rem;
   }
 

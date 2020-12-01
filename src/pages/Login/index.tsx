@@ -26,16 +26,18 @@ function Login(): ReactElement {
       return
     }
 
-    apiCore.post('classes', {
-      email,
-      password,
-    }).then(() => {
-      alert('Login realizado com sucesso!');
+    history.push('/call-list')
 
-      history.push('/');
-    }).catch(() => {
-      alert('Erro no login.');
-    });
+
+    // apiCore.post('classes', {
+    //   email,
+    //   password,
+    // }).then(() => {
+    //   alert('Login realizado com sucesso!')
+
+    // }).catch(() => {
+    //   alert('Erro no login.')
+    // })
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
