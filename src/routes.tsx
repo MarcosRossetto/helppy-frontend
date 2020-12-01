@@ -5,6 +5,7 @@ import Landing from './pages/Landing'
 import CallForm from './pages/CallForm'
 import CallFormList from './pages/CallFormList'
 import Login from './pages/Login'
+import NotFound from './pages/NotFound'
 
 function Routes(): ReactElement {
   return (
@@ -14,6 +15,7 @@ function Routes(): ReactElement {
         <Route path="/call-form" exact component={CallForm} />
         <Route path="/login" exact component={Login} />
         <Route path="/call-list" exact component={CallFormList} />
+        <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
   )
