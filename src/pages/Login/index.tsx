@@ -1,10 +1,9 @@
-import React, { ReactElement, useState, FormEvent } from 'react';
-import { useHistory } from 'react-router-dom';
-import PageHeader from '../../components/PageHeader';
-import Input from '../../components/Input';
+import React, { ReactElement, useState, FormEvent } from 'react'
+import { useHistory } from 'react-router-dom'
+import PageHeader from '../../components/PageHeader'
+import Input from '../../components/Input'
 
-import './styles.css';
-import apiCore from '../../services/apiCore';
+import './styles.css'
 import { testEmail, testPassword } from '../../utils/validations/validateInput'
 
 function Login(): ReactElement {
