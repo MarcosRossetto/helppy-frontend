@@ -35,9 +35,6 @@ function Landing(): ReactElement {
             <img src={studyIcon} alt="Abrir Chamado" />
             Abrir Chamado
           </Link>
-          <Link to="/login" className="login">
-            Login
-          </Link>
         </div>
 
         <span className="total-connections">
