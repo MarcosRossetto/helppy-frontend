@@ -63,7 +63,7 @@ const CallItem: React.FC<CallItemProps> = ({ call }: CallItemProps) => {
       setUser({name: newUser.name, whatsapp: newUser.whatsapp, email: newUser.email, cep: newUser.cep, address: newUser.address, district: newUser.district, number: newUser.number, uf: newUser.uf })
     })
 
-    apiCore.get(`schedules/filter/${call.schedule}`).then(response => {
+    apiCore.get(`schedules/filter/id/${call.schedule}`).then(response => {
       const newSchedule = response.data.schedule[0]
       setSchedule(newSchedule.schedule)
     })

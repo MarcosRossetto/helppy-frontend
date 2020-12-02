@@ -11,6 +11,28 @@
   color: var(--color-text-in-primary);
 }
 
+.teste {
+  background: var(--color-primary);
+}
+
+#page-teacher-list .button-teste {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  margin-top: 0rem;
+  background: transparent;
+  color: var(--color-button-text);
+  border: 0;
+  border-radius: 0.8rem;
+  cursor: pointer;
+}
+
+#page-teacher-list .button-teste:hover p {
+  margin-top: 0;
+  transition: all 0.5s;
+  color: var(--color-text-title);
+  text-decoration: underline;
+}
+
 #search-teachers button {
   width: 98%;
   height: 5.6rem;
