@@ -1,7 +1,9 @@
 import React, { ReactElement, useState, FormEvent, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import apiCore from '../../services/apiCore'
 import PageHeader from '../../components/PageHeader'
 import CallItem, { Call } from '../../components/CallItem'
+
 
 import Input from '../../components/Input'
 
@@ -57,16 +59,16 @@ function CallList(): ReactElement {
   return (
     <div id="page-teacher-list" className="container">
       <PageHeader title="Área Administrativa.">
-        <div className="teste">
-          <button type="button" className="button-teste">
+        <div className="link">
+          <Link to="/call-list" className="button-link current-page">
             <p>Chamados</p>
-          </button>
-          <button type="button" className="button-teste">
+          </Link>
+          <Link to="/schedule-list" className="button-link">
             <p>Agendamentos</p>
-          </button>
-          <button type="button" className="button-teste">
+          </Link>
+          <Link to="/categories-list" className="button-link">
             <p>Categorias</p>
-          </button>
+          </Link>
         </div>
         <form id="search-teachers" onSubmit={searchCalls}>
           <Input
