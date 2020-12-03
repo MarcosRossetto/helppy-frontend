@@ -7,6 +7,7 @@ import CallFormList from './pages/CallFormList'
 import ScheduleList from './pages/ScheduleList'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
+import CategoriesList from './pages/CategoriesList'
 
 function Routes(): ReactElement {
   return (
@@ -15,8 +16,9 @@ function Routes(): ReactElement {
         <Route path="/" exact component={Landing} />
         <Route path="/call-form" exact component={CallForm} />
         <Route path="/login" exact component={Login} />
-        <Route path="/call-list" exact component={CallFormList} />
-        <Route path="/schedule-list" exact component={ScheduleList} />
+        <Route path="/admin/call-list" exact component={CallFormList} />
+        <Route path="/admin/schedule-list" exact component={ScheduleList} />
+        <Route path="/admin/categories-list" exact component={CategoriesList} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>

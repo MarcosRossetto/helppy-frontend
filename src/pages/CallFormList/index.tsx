@@ -60,13 +60,13 @@ function CallList(): ReactElement {
     <div id="page-teacher-list" className="container">
       <PageHeader title="Área Administrativa.">
         <div className="link">
-          <Link to="/call-list" className="button-link current-page">
+          <Link to="/admin/call-list" className="button-link current-page">
             <p>Chamados</p>
           </Link>
-          <Link to="/schedule-list" className="button-link">
+          <Link to="/admin/schedule-list" className="button-link">
             <p>Agendamentos</p>
           </Link>
-          <Link to="/categories-list" className="button-link">
+          <Link to="/admin/categories-list" className="button-link">
             <p>Categorias</p>
           </Link>
         </div>

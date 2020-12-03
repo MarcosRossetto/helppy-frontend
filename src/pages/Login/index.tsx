@@ -25,7 +25,7 @@ function Login(): ReactElement {
       return
     }
 
-    history.push('/call-list')
+    history.push('/admin/call-list')
 
 
     // apiCore.post('classes', {

@@ -9,7 +9,7 @@ import Input from '../../components/Input'
 
 import './styles.css'
 
-function CallList(): ReactElement {
+function ScheduleList(): ReactElement {
   const history = useHistory()
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
@@ -33,9 +33,9 @@ function CallList(): ReactElement {
     try {
       const response = await apiCore.post('schedules', { schedule })
       if(response.status === 201) {
-        history.push('/schedule-list')
+        history.push('/admin/schedule-list')
         alert('Agendamento criado com sucesso')
-        window.location.reload()        
+        window.location.reload()    
     }
     } catch (error) {
       alert('Data incorreta ou já cadastrada!')
@@ -54,13 +54,13 @@ function CallList(): ReactElement {
     <div id="page-teacher-list" className="container">
       <PageHeader title="Área Administrativa.">
         <div className="link">
-          <Link to="/call-list" className="button-link">
+          <Link to="/admin/call-list" className="button-link">
             <p>Chamados</p>
           </Link>
-          <Link to="/schedules-list" className="button-link current-page">
+          <Link to="/admin/schedule-list" className="button-link current-page">
             <p>Agendamentos</p>
           </Link>
-          <Link to="/categories-list" className="button-link">
+          <Link to="/admin/categories-list" className="button-link">
             <p>Categorias</p>
           </Link>
         </div>
@@ -95,4 +95,4 @@ function CallList(): ReactElement {
   )
 }
 
-export default CallList
+export default ScheduleList

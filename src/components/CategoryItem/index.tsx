@@ -7,25 +7,24 @@ import deleteIcon from '../../assets/images/icons/delete.svg'
 
 import apiCore from '../../services/apiCore'
 
-export interface Schedule {
+export interface Category {
   id: string
-  schedule: string
-  active: boolean
+  category: string
 }
-interface ScheduleItemProps {
-  schedule: Schedule
+interface CategoryItemProps {
+  category: Category
 }
 
 
-const ScheduleItem: React.FC<ScheduleItemProps> = ({ schedule }: ScheduleItemProps) => {
+const CategoryItem: React.FC<CategoryItemProps> = ({ category }: CategoryItemProps) => {
   const history = useHistory()
 
-  async function handleAlterSchedule(e: FormEvent) {
+  async function handleAlterCategory(e: FormEvent) {
     e.preventDefault()
     try {
-      const response = await apiCore.delete(`schedules/${schedule.id}`)
+      const response = await apiCore.delete(`categories-calls/${category.id}`)
       if(response.status === 204) {
-        history.push('/admin/schedule-list')
+        history.push('/admin/categories-list')
         alert('Deletado com sucesso')
         window.location.reload()
       }
@@ -40,17 +39,17 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ schedule }: ScheduleItemPro
       <header>
         <div>
           <p>
-            <strong className="title">{`${schedule.schedule}`}</strong>
+            <strong className="title">{`${category.category}`}</strong>
           </p>
         </div>
       </header>
       <footer>
         <button
           style={{width: '15rem'}}
-          onClick={handleAlterSchedule}
+          onClick={handleAlterCategory}
           type="button"
         >
-          <img src={deleteIcon} alt="check" />
+          <img src={deleteIcon} alt="delete" />
           Excluir
         </button>
       </footer>
@@ -58,4 +57,4 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ schedule }: ScheduleItemPro
   )
 }
 
-export default ScheduleItem;
+export default CategoryItem;
